@@ -106,6 +106,7 @@ mapfile -t CLASS_FILES < <(find "$CLASSES" -name '*.class')
     --dex \
     --min-api 24 \
     --no-tree-shaking \
+    --no-minification \
     --lib "$ANDROID_JAR" \
     --output "$DEX" \
     "${CLASS_FILES[@]}"
@@ -142,6 +143,9 @@ echo "==> Signing APK"
 
 echo "==> Verifying APK"
 "$JAVA" -jar "$APKSIGNER_JAR" verify --verbose "$FINAL_APK"
+
+# The v4 signature file is not needed for installation.
+rm -f "$APP_DIR/Cobalt.apk.idsig"
 
 echo
 echo "==> Done"
